@@ -16,10 +16,14 @@ const ZipCodes = () => {
    //after each key inputted (5 then 4 then so on)
    async function handleSearch(){
         try {
-            const zipList = await axios.get("https://zip-api.eu/api/v1/info/US-11373");
+            const zipList = await axios.get(`https://zip-api.eu/api/v1/info/US-${zip}`);
             //setCity
-        } catch (error) {
+            setCity(zipList.data);
+            console.log(zipList.data)
             
+        } catch (error) {
+            console.error(error);
+            alert("Require a zip code");
         }
    }
 
@@ -27,19 +31,30 @@ const ZipCodes = () => {
         setZip(event.target.value);
    }
 
-   console.log(zip);
+   //console.log(zip);
    //this is where we will be implementing html
-    return ( 
-        <div> 
-            <h1>Search Your Zip Code!</h1>
-            <input
-                type="text"
-                value={zip}
-                onChange = {handleZip}
-                placeholder="Enter a zipcode"
-            />
-            <button onclick="">Search</button>
-        </div>
+    return (
+        <>
+            <div> 
+                <h1>Search Your Zip Code!</h1>
+                <input
+                    type="text"
+                    value={zip}
+                    onChange = {handleZip}
+                    placeholder="Enter a zipcode"
+                />
+                <button onClick={handleSearch}>Search</button>
+            </div>
+            <div>
+                    <h2>Zip Code Details:</h2>
+                    <h4>Country code: {city.country_code}</h4>
+                    <h4>Postal code:  {city.postal_code}</h4>
+                    <h4>State:  {city.state}</h4>
+                    <h4>Place Name:  {city.place_name}</h4>
+                    <h4>Latitude: {city.lat}</h4>
+                    <h4>Longitude: {city.lng}</h4>
+            </div>
+        </>
     )
     
 }
